@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <filter id="soft"><feGaussianBlur stdDeviation="2.2"/></filter>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .07 0"/>
+      <feComposite in2="SourceGraphic" operator="in"/>
+    </filter>
+    <radialGradient id="pool" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ff9a2e" stop-opacity=".45"/><stop offset=".55" stop-color="#3d9cff" stop-opacity=".18"/><stop offset="1" stop-color="#3d9cff" stop-opacity="0"/></radialGradient>
+    <radialGradient id="contact" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#000" stop-opacity=".45"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+    <linearGradient id="t-o" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0c8"/><stop offset=".7" stop-color="#ffb347"/><stop offset="1" stop-color="#ff5fa2" stop-opacity=".9"/></linearGradient>
+    <linearGradient id="l-o" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffb347"/><stop offset=".6" stop-color="#ff7a14"/><stop offset="1" stop-color="#b34700"/></linearGradient>
+    <linearGradient id="r-o" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff5fa2" stop-opacity=".85"/><stop offset=".35" stop-color="#ff7a14"/><stop offset="1" stop-color="#b34700"/></linearGradient>
+    <linearGradient id="rim-o" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".5" stop-color="#ff5fa2" stop-opacity=".6"/><stop offset="1" stop-color="#fff" stop-opacity=".35"/></linearGradient>
+    <filter id="glow-o" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="14.52" result="b"/>
+      <feFlood flood-color="#ff9a2e" flood-opacity=".6"/><feComposite in2="b" operator="in" result="g"/>
+      <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="t-b1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d6f1ff"/><stop offset=".7" stop-color="#5cb8ff"/><stop offset="1" stop-color="#b89cff" stop-opacity=".9"/></linearGradient>
+    <linearGradient id="l-b1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5cb8ff"/><stop offset=".6" stop-color="#2a7bea"/><stop offset="1" stop-color="#123f9c"/></linearGradient>
+    <linearGradient id="r-b1" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b89cff" stop-opacity=".85"/><stop offset=".35" stop-color="#2a7bea"/><stop offset="1" stop-color="#123f9c"/></linearGradient>
+    <linearGradient id="rim-b1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".5" stop-color="#b89cff" stop-opacity=".6"/><stop offset="1" stop-color="#fff" stop-opacity=".35"/></linearGradient>
+    <filter id="glow-b1" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="14.52" result="b"/>
+      <feFlood flood-color="#3d9cff" flood-opacity=".6"/><feComposite in2="b" operator="in" result="g"/>
+      <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="t-b2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d6f1ff"/><stop offset=".7" stop-color="#5cb8ff"/><stop offset="1" stop-color="#b89cff" stop-opacity=".9"/></linearGradient>
+    <linearGradient id="l-b2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5cb8ff"/><stop offset=".6" stop-color="#2a7bea"/><stop offset="1" stop-color="#123f9c"/></linearGradient>
+    <linearGradient id="r-b2" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b89cff" stop-opacity=".85"/><stop offset=".35" stop-color="#2a7bea"/><stop offset="1" stop-color="#123f9c"/></linearGradient>
+    <linearGradient id="rim-b2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".5" stop-color="#b89cff" stop-opacity=".6"/><stop offset="1" stop-color="#fff" stop-opacity=".35"/></linearGradient>
+    <filter id="glow-b2" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="14.52" result="b"/>
+      <feFlood flood-color="#3d9cff" flood-opacity=".6"/><feComposite in2="b" operator="in" result="g"/>
+      <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter><pattern id="dots" width="18" height="18" patternUnits="userSpaceOnUse"><rect x="7.8" y="7.8" width="2.4" height="2.4" rx=".6" fill="#8fb4ff" opacity=".12"/></pattern>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1a2440"/><stop offset="1" stop-color="#0f1626"/></linearGradient>
+    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".14"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="rimg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".7"/><stop offset=".5" stop-color="#b89cff" stop-opacity=".25"/><stop offset="1" stop-color="#fff" stop-opacity=".35"/></linearGradient>
+    <clipPath id="sq"><rect x="16" y="16" width="480" height="480" rx="120"/></clipPath>
+  </defs>
+  <g clip-path="url(#sq)">
+    <rect width="512" height="512" fill="url(#bg)"/>
+    <rect width="512" height="512" fill="url(#dots)"/>
+    <rect width="512" height="512" fill="#fff" filter="url(#grain)"/>
+    <ellipse cx="256" cy="235.4" rx="171.6" ry="125.39999999999999" fill="url(#pool)"/><ellipse cx="256" cy="370.70000000000005" rx="125.39999999999999" ry="27.72" fill="url(#contact)"/>
+  <g filter="url(#glow-o)">
+    <polygon points="198.8423236,169.4 256.0,202.4 256.0,268.4 198.8423236,235.4" fill="url(#l-o)" fill-opacity=".93"/>
+    <polygon points="256.0,202.4 313.1576764,169.4 313.1576764,235.4 256.0,268.4" fill="url(#r-o)" fill-opacity=".93"/>
+    <polygon points="256.0,136.4 313.1576764,169.4 256.0,202.4 198.8423236,169.4" fill="url(#t-o)"/>
+    <polygon points="198.8423236,203.72 256.0,236.72000000000003 256.0,245.95999999999998 198.8423236,212.96" fill="#fff" opacity=".16"/>
+    <polygon points="256.0,236.72000000000003 313.1576764,203.72 313.1576764,210.32 256.0,243.32" fill="#fff" opacity=".10"/>
+    <ellipse cx="245.711618248" cy="162.14000000000001" rx="24.006224088" ry="7.26" transform="rotate(-30 245.711618248 162.14000000000001)" fill="#fff" opacity=".6" filter="url(#soft)"/>
+    <polyline points="198.8423236,169.4 256.0,202.4 313.1576764,169.4" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="1.848" stroke-linejoin="round"/>
+    <line x1="256.0" y1="202.4" x2="256.0" y2="268.4" stroke="#fff" stroke-opacity=".4" stroke-width="1.452"/>
+    <polygon points="256.0,136.4 313.1576764,169.4 313.1576764,235.4 256.0,268.4 198.8423236,235.4 198.8423236,169.4" fill="none" stroke="url(#rim-o)" stroke-width="2.31" stroke-linejoin="round"/>
+  </g>
+  <g filter="url(#glow-b1)">
+    <polygon points="141.68464719999997,242.0 198.8423236,275.0 198.8423236,341.0 141.68464719999997,308.0" fill="url(#l-b1)" fill-opacity=".93"/>
+    <polygon points="198.8423236,275.0 256.0,242.0 256.0,308.0 198.8423236,341.0" fill="url(#r-b1)" fill-opacity=".93"/>
+    <polygon points="198.8423236,209.0 256.0,242.0 198.8423236,275.0 141.68464719999997,242.0" fill="url(#t-b1)"/>
+    <polygon points="141.68464719999997,276.32 198.8423236,309.32 198.8423236,318.56 141.68464719999997,285.56" fill="#fff" opacity=".16"/>
+    <polygon points="198.8423236,309.32 256.0,276.32 256.0,282.92 198.8423236,315.92" fill="#fff" opacity=".10"/>
+    <ellipse cx="188.553941848" cy="234.74" rx="24.006224088" ry="7.26" transform="rotate(-30 188.553941848 234.74)" fill="#fff" opacity=".6" filter="url(#soft)"/>
+    <polyline points="141.68464719999997,242.0 198.8423236,275.0 256.0,242.0" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="1.848" stroke-linejoin="round"/>
+    <line x1="198.8423236" y1="275.0" x2="198.8423236" y2="341.0" stroke="#fff" stroke-opacity=".4" stroke-width="1.452"/>
+    <polygon points="198.8423236,209.0 256.0,242.0 256.0,308.0 198.8423236,341.0 141.68464719999997,308.0 141.68464719999997,242.0" fill="none" stroke="url(#rim-b1)" stroke-width="2.31" stroke-linejoin="round"/>
+  </g>
+  <g filter="url(#glow-b2)">
+    <polygon points="256.0,242.0 313.1576764,275.0 313.1576764,341.0 256.0,308.0" fill="url(#l-b2)" fill-opacity=".93"/>
+    <polygon points="313.1576764,275.0 370.3153528,242.0 370.3153528,308.0 313.1576764,341.0" fill="url(#r-b2)" fill-opacity=".93"/>
+    <polygon points="313.1576764,209.0 370.3153528,242.0 313.1576764,275.0 256.0,242.0" fill="url(#t-b2)"/>
+    <polygon points="256.0,276.32 313.1576764,309.32 313.1576764,318.56 256.0,285.56" fill="#fff" opacity=".16"/>
+    <polygon points="313.1576764,309.32 370.3153528,276.32 370.3153528,282.92 313.1576764,315.92" fill="#fff" opacity=".10"/>
+    <ellipse cx="302.869294648" cy="234.74" rx="24.006224088" ry="7.26" transform="rotate(-30 302.869294648 234.74)" fill="#fff" opacity=".6" filter="url(#soft)"/>
+    <polyline points="256.0,242.0 313.1576764,275.0 370.3153528,242.0" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="1.848" stroke-linejoin="round"/>
+    <line x1="313.1576764" y1="275.0" x2="313.1576764" y2="341.0" stroke="#fff" stroke-opacity=".4" stroke-width="1.452"/>
+    <polygon points="313.1576764,209.0 370.3153528,242.0 370.3153528,308.0 313.1576764,341.0 256.0,308.0 256.0,242.0" fill="none" stroke="url(#rim-b2)" stroke-width="2.31" stroke-linejoin="round"/>
+  </g>
+    <path d="M16 136 Q16 16 136 16 L376 16 Q496 16 496 136 L496 210 Q256 150 16 250 Z" fill="url(#sheen)"/>
+  </g>
+  <rect x="17.5" y="17.5" width="477" height="477" rx="118.5" fill="none" stroke="url(#rimg)" stroke-width="3"/>
+</svg>

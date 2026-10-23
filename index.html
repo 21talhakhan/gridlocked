@@ -1,0 +1,926 @@
+<!doctype html>
+<html lang="en" data-theme="midnight">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GridLocked</title>
+<meta name="description" content="Log the small wins. Light up the grid. Stay locked in.">
+<meta name="theme-color" content="#121929">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="GridLocked">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<style>
+@font-face { font-family: "Michroma"; font-weight: 400; font-style: normal; font-display: swap; src: url("fonts/michroma-400.woff2") format("woff2"); }
+@font-face { font-family: "VT323"; font-weight: 400; font-style: normal; font-display: swap; src: url("fonts/vt323-400.woff2") format("woff2"); }
+@font-face { font-family: "Chakra Petch"; font-weight: 400; font-style: normal; font-display: swap; src: url("fonts/chakra-petch-400.woff2") format("woff2"); }
+@font-face { font-family: "Chakra Petch"; font-weight: 500; font-style: normal; font-display: swap; src: url("fonts/chakra-petch-500.woff2") format("woff2"); }
+@font-face { font-family: "Chakra Petch"; font-weight: 600; font-style: normal; font-display: swap; src: url("fonts/chakra-petch-600.woff2") format("woff2"); }
+
+/* =========================================================
+   THEMES: each theme only redefines tokens. Add a theme by
+   adding a block here and an option in THEMES (script).
+   ========================================================= */
+:root {
+  --font-display: "Michroma", "Trebuchet MS", sans-serif;
+  --font-ui: "Chakra Petch", "Tahoma", sans-serif;
+  --font-lcd: "VT323", "Courier New", monospace;
+  --lcd-bg: #0a2226; --lcd-bg-2: #0f2f33; --lcd-off: #163a3e;
+  --lcd-on: #6ff5e0; --lcd-text: #8ffbe9; --lcd-dim: #5fbfb0;
+  --gel: #2f7de1; --gel-hi: #9fd0ff; --gel-lo: #164f9e;
+  --lock: #ff9a2e;
+}
+[data-theme="midnight"] {
+  --page: radial-gradient(1100px 600px at 20% -10%, #34508f55, transparent 60%), linear-gradient(160deg, #121929, #1d2a47);
+  --dots: rgba(143,180,255,.07);
+  --shell-bg: linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.03));
+  --shell-border: rgba(255,255,255,.13);
+  --shell-shadow: 0 30px 70px -24px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.14);
+  --ink: #e6ecf7; --ink-soft: #93a1ba;
+  --word: linear-gradient(180deg, #e8edf6 0%, #c3cddf 46%, #8794ad 52%, #a9b6cc 60%, #d9e0ec 100%);
+  --tagline: #7fe8d8;
+  --field-bg: rgba(6,10,20,.55); --field-border: rgba(255,255,255,.14); --field-ink: #e6ecf7; --field-shadow: inset 0 2px 4px rgba(0,0,0,.35);
+  --chip-bg: rgba(255,255,255,.06); --chip-border: rgba(255,255,255,.16); --chip-ink: #dbe3f1; --chip-hi: inset 0 1px 0 rgba(255,255,255,.1);
+  --item-bg: rgba(255,255,255,.045); --item-border: rgba(255,255,255,.08);
+  --bezel: linear-gradient(180deg, #0a0e17, #1a2235); --bezel-hi: 0 1px 0 rgba(255,255,255,.08);
+  --dialog-bg: #171f36; --rule: rgba(255,255,255,.1); --link: #8fc4ff;
+}
+[data-theme="daylight"] {
+  background-color: #d9e0ec;
+  --page: radial-gradient(1100px 600px at 20% -10%, #ffffffaa, transparent 60%), linear-gradient(160deg, #eef1f6, #d9e0ec);
+  --dots: rgba(59,74,102,.10);
+  --shell-bg: linear-gradient(180deg, rgba(255,255,255,.82), rgba(255,255,255,.58));
+  --shell-border: rgba(30,40,60,.12);
+  --shell-shadow: 0 30px 60px -28px rgba(30,45,80,.35), inset 0 1px 0 #fff;
+  --ink: #1d2430; --ink-soft: #5a6577;
+  --word: linear-gradient(180deg, #4a5468 0%, #323b4d 48%, #252d3c 54%, #4f5a70 100%);
+  --tagline: #2f6fd1;
+  --field-bg: #ffffff; --field-border: #c3cad6; --field-ink: #1d2430; --field-shadow: inset 0 1px 3px rgba(0,0,0,.08);
+  --chip-bg: linear-gradient(180deg, #ffffff, #e9edf3); --chip-border: #c3cad6; --chip-ink: #1d2430; --chip-hi: inset 0 1px 0 #fff;
+  --item-bg: rgba(255,255,255,.75); --item-border: rgba(30,40,60,.08);
+  --bezel: linear-gradient(180deg, #2a2f37, #4a515c); --bezel-hi: 0 1px 0 rgba(255,255,255,.8);
+  --dialog-bg: #f7f9fc; --rule: rgba(30,40,60,.12); --link: #1f5fc4;
+}
+[data-theme="brushed"] {
+  background-color: #2b3c63;
+  --page: radial-gradient(1200px 600px at 20% -10%, #3b5a9a55, transparent 60%), linear-gradient(160deg, #18233a, #2b3c63);
+  --dots: rgba(143,180,255,.05);
+  --shell-bg: repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 1px, transparent 1px 3px), linear-gradient(180deg, #f1f3f6, #cfd4dc 35%, #9aa2ae);
+  --shell-border: #6c7480;
+  --shell-shadow: inset 0 2px 0 rgba(255,255,255,.9), inset 0 -3px 6px rgba(0,0,0,.18), 0 30px 60px -20px rgba(0,0,0,.6);
+  --ink: #1d2430; --ink-soft: #4b5563;
+  --word: linear-gradient(180deg, #5b6472 0%, #2a313b 50%, #4a525e 54%, #7d8592 100%);
+  --tagline: #1f5fc4;
+  --field-bg: linear-gradient(180deg, #e9edf2, #ffffff 40%); --field-border: #8e96a2; --field-ink: #1d2430; --field-shadow: inset 0 2px 3px rgba(0,0,0,.18);
+  --chip-bg: linear-gradient(180deg, #ffffff, #dfe3e9); --chip-border: #8e96a2; --chip-ink: #1d2430; --chip-hi: inset 0 1px 0 #fff;
+  --item-bg: rgba(255,255,255,.55); --item-border: rgba(0,0,0,.08);
+  --bezel: linear-gradient(180deg, #2a2f37, #4a515c); --bezel-hi: 0 1px 0 rgba(255,255,255,.7);
+  --dialog-bg: #dfe3e9; --rule: rgba(0,0,0,.12); --link: #164f9e;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+html { background: var(--page); min-height: 100%; }
+[data-theme="midnight"] { background-color: #1d2a47; }
+body {
+  min-height: 100vh;
+  color: var(--ink); font-family: var(--font-ui); font-size: 16px; line-height: 1.45;
+  padding: calc(28px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right)) calc(48px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left));
+  transition: color .2s ease;
+}
+body::before {
+  /* dot grid + grain, fixed behind everything */
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    radial-gradient(var(--dots) 1.2px, transparent 1.4px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");
+  background-size: 16px 16px, 160px 160px;
+}
+
+/* ===== Shell ===== */
+.device {
+  position: relative; z-index: 1;
+  max-width: 800px; margin: 0 auto;
+  border-radius: 30px; padding: 20px 24px 22px;
+  background: var(--shell-bg);
+  border: 1px solid var(--shell-border);
+  box-shadow: var(--shell-shadow);
+  -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+}
+
+header.top { display: flex; align-items: center; gap: 14px; padding: 2px 4px 14px; }
+.mark { width: 58px; height: auto; flex: none; margin: -6px -4px -8px -6px; }
+.brand { flex: 1; min-width: 0; }
+.wordmark {
+  margin: 0; font-family: var(--font-display); font-weight: 400;
+  font-size: clamp(20px, 3.8vw, 27px); letter-spacing: .05em; line-height: 1.1;
+  background: var(--word); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.tagline { margin: 3px 0 0; font-family: var(--font-lcd); font-size: 18px; line-height: 1; color: var(--tagline); }
+
+.iconbtn {
+  flex: none; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center;
+  border: 1px solid var(--chip-border); background: var(--chip-bg); color: var(--chip-ink);
+  box-shadow: var(--chip-hi); cursor: pointer;
+}
+.iconbtn svg { width: 20px; height: 20px; }
+.iconbtn:hover svg { transform: rotate(30deg); transition: transform .3s ease; }
+.iconbtn:focus-visible { outline: 2px solid var(--gel); outline-offset: 2px; }
+
+/* mode switch: hardware-style segmented buttons */
+.modes {
+  display: inline-flex; padding: 4px; gap: 4px; border-radius: 999px; margin: 0 0 14px 2px;
+  background: var(--field-bg); border: 1px solid var(--field-border); box-shadow: var(--field-shadow);
+}
+.mode {
+  font: 400 12px var(--font-display); letter-spacing: .12em; color: var(--ink-soft);
+  border: 0; background: none; padding: 9px 18px; border-radius: 999px; cursor: pointer; position: relative; overflow: hidden;
+}
+.mode[aria-selected="true"] {
+  color: #fff; text-shadow: 0 -1px 0 rgba(0,0,0,.3);
+  background: linear-gradient(180deg, var(--gel-hi) 0%, var(--gel) 50%, var(--gel-lo) 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 2px 8px rgba(22,79,158,.45);
+}
+.mode[aria-selected="true"]::before {
+  content: ""; position: absolute; left: 12%; right: 12%; top: 2px; height: 42%;
+  border-radius: 999px; background: linear-gradient(180deg, rgba(255,255,255,.7), rgba(255,255,255,.05));
+}
+.mode:focus-visible { outline: 2px solid var(--gel); outline-offset: 2px; }
+
+/* ===== LCD ===== */
+.bezel { border-radius: 18px; padding: 10px; background: var(--bezel); box-shadow: inset 0 2px 6px rgba(0,0,0,.6), var(--bezel-hi); }
+.lcd {
+  position: relative; border-radius: 10px; padding: 14px 16px 12px;
+  background: radial-gradient(120% 140% at 50% 0%, var(--lcd-bg-2), var(--lcd-bg));
+  color: var(--lcd-text); font-family: var(--font-lcd); overflow: hidden;
+}
+.lcd::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 1px, transparent 1px 3px), linear-gradient(160deg, rgba(255,255,255,.07), transparent 40%);
+}
+.readout { display: flex; flex-wrap: wrap; gap: 6px 24px; font-size: 22px; line-height: 1; text-shadow: 0 0 6px rgba(111,245,224,.55); margin-bottom: 12px; }
+.readout b { font-weight: normal; color: #fff; }
+.readout .lockstat b { color: var(--lock); text-shadow: 0 0 6px rgba(255,154,46,.6); }
+
+.gridwrap { overflow-x: auto; padding: 4px 6px 6px 0; scrollbar-width: thin; scrollbar-color: var(--lcd-off) transparent; }
+.grid {
+  display: grid; grid-template-columns: 22px repeat(var(--weeks), minmax(14px, 1fr)); grid-template-rows: 14px;
+  gap: 4px; min-width: calc(22px + var(--weeks) * 18px); font-size: 15px; color: var(--lcd-dim);
+}
+.mlabel { grid-row: 1; white-space: nowrap; line-height: 14px; }
+.dlabel { grid-column: 1; align-self: center; line-height: 1; }
+.cell { width: 100%; aspect-ratio: 1; padding: 0; border: 0; border-radius: 3px; background: var(--lcd-off); cursor: pointer; position: relative; }
+.cell[data-l="1"] { background: color-mix(in srgb, var(--lcd-on) 32%, var(--lcd-off)); }
+.cell[data-l="2"] { background: color-mix(in srgb, var(--lcd-on) 60%, var(--lcd-off)); box-shadow: 0 0 5px rgba(111,245,224,.35); }
+.cell[data-l="3"] { background: var(--lcd-on); box-shadow: 0 0 8px rgba(111,245,224,.6); }
+.cell[data-l="4"] { background: #dffff9; box-shadow: 0 0 12px rgba(111,245,224,.9); }
+.cell.locked { outline: 2px solid var(--lock); outline-offset: 1px; }
+.cell.future { opacity: .25; cursor: default; }
+.cell.today::after { content: ""; position: absolute; left: 3px; right: 3px; bottom: -4px; height: 2px; background: var(--lcd-text); animation: blink 1.1s steps(1) infinite; }
+.cell.selected { box-shadow: 0 0 0 2px #fff, 0 0 10px rgba(255,255,255,.6); }
+.cell:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.cell.flash { animation: poweron .5s steps(4) 1; }
+@keyframes blink { 50% { opacity: 0; } }
+@keyframes poweron { 0%{filter:brightness(3)} 25%{filter:brightness(.4)} 50%{filter:brightness(2.2)} 100%{filter:none} }
+.legend { display: flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 16px; color: var(--lcd-dim); flex-wrap: wrap; }
+.legend .cell { width: 12px; height: 12px; aspect-ratio: auto; cursor: default; }
+.legend .sep { width: 14px; }
+
+/* ===== Panels, inputs ===== */
+.panel { padding: 18px 4px 2px; }
+.panel h2 { font-family: var(--font-display); font-weight: 400; font-size: 14px; letter-spacing: .04em; margin: 0 0 4px; }
+.sub { font-size: 13px; color: var(--ink-soft); margin: 0 0 12px; }
+.linkish { font: inherit; color: var(--link); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; }
+
+.inputrow { display: flex; gap: 10px; }
+.field {
+  flex: 1; min-width: 0; font: 500 16px var(--font-ui); color: var(--field-ink);
+  padding: 11px 14px; border-radius: 12px; border: 1px solid var(--field-border);
+  background: var(--field-bg); box-shadow: var(--field-shadow);
+}
+.field::placeholder { color: var(--ink-soft); opacity: .8; }
+.field:focus { outline: 2px solid var(--gel); outline-offset: 1px; }
+
+.gel {
+  font: 600 15px var(--font-ui); color: #fff; letter-spacing: .02em;
+  padding: 11px 20px; border-radius: 999px; border: 1px solid var(--gel-lo);
+  background: linear-gradient(180deg, var(--gel-hi) 0%, var(--gel) 50%, var(--gel-lo) 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 3px 10px rgba(22,79,158,.45);
+  text-shadow: 0 -1px 0 rgba(0,0,0,.3); cursor: pointer; position: relative; overflow: hidden; white-space: nowrap;
+}
+.gel::before { content: ""; position: absolute; left: 10%; right: 10%; top: 2px; height: 45%; border-radius: 999px; background: linear-gradient(180deg, rgba(255,255,255,.75), rgba(255,255,255,.05)); }
+.gel:active { transform: translateY(1px); filter: brightness(.95); }
+.gel:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.tag {
+  --c: #888; font: 500 14px var(--font-ui); color: var(--chip-ink);
+  display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--chip-border); background: var(--chip-bg); box-shadow: var(--chip-hi);
+}
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--c); box-shadow: 0 0 5px var(--c); flex: none; }
+.tag[aria-pressed="true"] { border-color: var(--c); background: color-mix(in srgb, var(--c) 28%, transparent); box-shadow: 0 0 0 1px var(--c), 0 0 12px color-mix(in srgb, var(--c) 45%, transparent); }
+.tag .x { margin-left: 2px; opacity: .5; font-size: 13px; }
+.tag .x:hover { opacity: 1; }
+.tag:focus-visible { outline: 2px solid var(--gel); outline-offset: 2px; }
+.tag.add { border-style: dashed; background: transparent; box-shadow: none; color: var(--ink-soft); }
+.newtag { display: none; gap: 8px; margin-top: 10px; }
+.newtag.open { display: flex; }
+.newtag .field { padding: 8px 12px; font-size: 15px; }
+
+.chip {
+  font: 500 13px var(--font-ui); color: var(--chip-ink); padding: 8px 14px; border-radius: 10px; cursor: pointer;
+  border: 1px solid var(--chip-border); background: var(--chip-bg); box-shadow: var(--chip-hi);
+}
+.chip:focus-visible { outline: 2px solid var(--gel); outline-offset: 2px; }
+.chip.danger { color: #e5484d; }
+
+.wins { list-style: none; margin: 14px 0 0; padding: 0; }
+.wins li { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; margin-bottom: 6px; background: var(--item-bg); border: 1px solid var(--item-border); }
+.wins .t { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.pill { --c:#888; font-size: 12px; padding: 2px 9px; border-radius: 999px; white-space: nowrap; color: var(--ink); background: color-mix(in srgb, var(--c) 25%, transparent); border: 1px solid color-mix(in srgb, var(--c) 70%, transparent); }
+.del { border: 0; background: none; cursor: pointer; color: var(--ink-soft); font-size: 18px; line-height: 1; padding: 2px 6px; }
+.del:hover { color: #e5484d; }
+.empty { font-size: 14px; color: var(--ink-soft); margin: 14px 0 0; }
+
+/* ===== Matrix: equalizer ===== */
+.weeknav { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 2px 12px; }
+.weeknav h2 { font-family: var(--font-display); font-weight: 400; font-size: 14px; letter-spacing: .04em; margin: 0; }
+.weeknav .sub { margin: 2px 0 0; }
+.stepbtns { display: flex; gap: 6px; }
+.stepbtns .chip { width: 38px; padding: 7px 0; font-size: 16px; line-height: 1; }
+.stepbtns .chip:disabled { opacity: .35; cursor: default; }
+
+.eq { display: flex; justify-content: space-around; gap: 10px; padding: 4px 4px 0; }
+.bar { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; min-width: 44px; max-width: 72px; }
+.stack { display: flex; flex-direction: column-reverse; gap: 3px; width: 100%; }
+.seg { height: 9px; border-radius: 2px; background: var(--lcd-off); position: relative; transition: background .12s ease, box-shadow .12s ease; transition-delay: var(--d, 0ms); }
+.seg.slot { background: color-mix(in srgb, var(--lcd-on) 14%, var(--lcd-off)); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--lcd-on) 30%, transparent); }
+.seg.on { background: var(--lcd-on); box-shadow: 0 0 8px rgba(111,245,224,.55); }
+.bar.hit .seg.on { background: var(--lock); box-shadow: 0 0 9px rgba(255,154,46,.65); }
+.seg.target::after { content: ""; position: absolute; left: -5px; right: -5px; top: -3px; height: 2px; background: #fff; opacity: .85; border-radius: 2px; box-shadow: 0 0 6px #fff; }
+.bar.hit .seg.target::after { background: var(--lock); box-shadow: 0 0 6px var(--lock); }
+.barlabel { text-align: center; line-height: 1; }
+.barlabel .n { font-size: 22px; color: #fff; text-shadow: 0 0 6px rgba(111,245,224,.5); }
+.bar.hit .barlabel .n { color: var(--lock); text-shadow: 0 0 6px rgba(255,154,46,.6); }
+.barlabel .nm { display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 17px; color: var(--lcd-dim); margin-top: 3px; white-space: nowrap; }
+.barlabel .nm .dot { width: 7px; height: 7px; }
+.eqnote { font-size: 16px; color: var(--lcd-dim); margin-top: 12px; }
+
+.targets { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; margin-top: 4px; }
+.trow { display: flex; align-items: center; gap: 10px; padding: 8px 10px 8px 12px; border-radius: 12px; background: var(--item-bg); border: 1px solid var(--item-border); }
+.trow .nm { flex: 1; display: flex; align-items: center; gap: 8px; min-width: 0; }
+.stepper { display: flex; align-items: center; gap: 6px; }
+.stepper button { width: 30px; height: 30px; border-radius: 50%; font-size: 17px; line-height: 1; padding: 0; }
+.stepper output { font-family: var(--font-lcd); font-size: 24px; min-width: 22px; text-align: center; }
+
+.insights { display: grid; grid-template-columns: 1fr 1.4fr; gap: 10px; margin-top: 4px; }
+.card { padding: 14px; border-radius: 14px; background: var(--item-bg); border: 1px solid var(--item-border); }
+.card h3 { margin: 0 0 8px; font-size: 13px; font-weight: 500; color: var(--ink-soft); }
+.top-tag { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 20px; letter-spacing: .03em; }
+.top-tag .dot { width: 12px; height: 12px; }
+.top-sub { margin: 6px 0 0; font-size: 13px; color: var(--ink-soft); }
+.ledstrip { display: grid; grid-template-columns: repeat(24, 1fr); gap: 3px; margin-bottom: 10px; }
+.ledstrip span { height: 14px; border-radius: 2px; background: var(--c); box-shadow: 0 0 6px color-mix(in srgb, var(--c) 60%, transparent); }
+.dist { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 14px; }
+.dist li { display: flex; align-items: center; gap: 8px; }
+.dist .nm { flex: 1; }
+.dist .pct { font-family: var(--font-lcd); font-size: 19px; color: var(--ink-soft); }
+
+/* ===== Settings dialog ===== */
+dialog {
+  width: min(560px, calc(100vw - 32px)); max-height: calc(100vh - 48px); padding: 0;
+  border: 1px solid var(--shell-border); border-radius: 22px; color: var(--ink);
+  background: var(--dialog-bg); box-shadow: 0 30px 80px -20px rgba(0,0,0,.6);
+}
+dialog::backdrop { background: rgba(8,12,22,.55); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.dlg-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 6px; }
+.dlg-head h2 { font-family: var(--font-display); font-weight: 400; font-size: 16px; letter-spacing: .05em; margin: 0; }
+.dlg-body { padding: 4px 20px 20px; }
+.dlg-sec { padding: 14px 0; border-top: 1px solid var(--rule); }
+.dlg-sec:first-child { border-top: 0; }
+.dlg-sec h3 { margin: 0 0 10px; font-size: 14px; font-weight: 600; }
+.themes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.theme-opt { cursor: pointer; border-radius: 14px; padding: 6px; border: 2px solid transparent; background: none; color: var(--ink); font: 500 13px var(--font-ui); text-align: left; }
+.theme-opt[aria-checked="true"] { border-color: var(--gel); }
+.theme-opt:focus-visible { outline: 2px solid var(--gel); outline-offset: 2px; }
+.swatch { height: 58px; border-radius: 10px; margin-bottom: 6px; position: relative; overflow: hidden; border: 1px solid rgba(0,0,0,.15); }
+.swatch::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: 9px; height: 16px; border-radius: 4px; background: radial-gradient(#0f2f33, #0a2226); box-shadow: inset 0 0 0 2px #2a2f37; }
+.sw-midnight { background: linear-gradient(160deg, #121929, #2a3c66); }
+.sw-daylight { background: linear-gradient(160deg, #ffffff, #d4dbe8); }
+.sw-brushed { background: repeating-linear-gradient(90deg, rgba(255,255,255,.12) 0 1px, transparent 1px 3px), linear-gradient(180deg, #f1f3f6, #9aa2ae); }
+.setrow { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.setrow p { margin: 0; font-size: 14px; }
+.setrow .sub { margin: 2px 0 0; }
+.btnrow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.led { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-soft); }
+.led i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; background: radial-gradient(circle at 35% 35%, #d7fff6, var(--lcd-on) 45%, #138a7c); box-shadow: 0 0 8px var(--lcd-on); }
+.led.off i { background: radial-gradient(circle at 35% 35%, #ffd9d9, #e04646 45%, #7d1717); box-shadow: 0 0 8px #e04646; }
+.about { font-size: 13px; color: var(--ink-soft); margin: 0; }
+
+[hidden] { display: none !important; }
+
+@media (max-width: 600px) {
+  body { padding: calc(10px + env(safe-area-inset-top)) 10px calc(100px + env(safe-area-inset-bottom)); }
+  /* backdrop-filter would trap the fixed tab bar inside the panel, so drop it on phones */
+  .device { -webkit-backdrop-filter: none; backdrop-filter: none; }
+  /* thumb-reach tab bar */
+  .modes {
+    position: fixed; z-index: 20; left: 50%; transform: translateX(-50%);
+    bottom: calc(14px + env(safe-area-inset-bottom)); margin: 0; padding: 5px;
+    background: color-mix(in srgb, var(--dialog-bg) 90%, transparent); border-color: var(--shell-border);
+    -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+    box-shadow: var(--field-shadow), 0 12px 30px -8px rgba(0,0,0,.55);
+  }
+  .mode { padding: 13px 30px; font-size: 13px; }
+  .tag { padding: 9px 14px; }
+  .stepbtns .chip { width: 44px; padding: 10px 0; }
+  .stepper button { width: 36px; height: 36px; }
+  .del { padding: 8px 10px; }
+  .device { padding: 16px 14px 18px; border-radius: 24px; }
+  .inputrow { flex-direction: column; }
+  .readout { font-size: 20px; gap: 6px 16px; }
+  .insights { grid-template-columns: 1fr; }
+  .themes { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .bar { min-width: 34px; }
+  .tagline { font-size: 16px; }
+}
+/* daylight in home-screen mode: keep the white status-bar text readable */
+@media (display-mode: standalone) {
+  [data-theme="daylight"] body::after { content: ""; position: fixed; top: 0; left: 0; right: 0; height: env(safe-area-inset-top); background: rgba(18,25,41,.9); z-index: 50; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cell.today::after, .cell.flash { animation: none; }
+  .seg { transition: none; }
+}
+</style>
+</head>
+<body>
+<main class="device">
+  <header class="top">
+    <img class="mark" src="icons/mark.svg" alt="">
+    <div class="brand">
+      <h1 class="wordmark">GRIDLOCKED</h1>
+      <p class="tagline">log your wins. light up the grid. stay locked in.</p>
+    </div>
+    <button class="iconbtn" id="opensettings" aria-label="Settings" title="Settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+  </header>
+
+  <nav class="modes" role="tablist" aria-label="View">
+    <button class="mode" role="tab" id="tab-grid" aria-controls="view-grid" aria-selected="true">GRID</button>
+    <button class="mode" role="tab" id="tab-matrix" aria-controls="view-matrix" aria-selected="false">MATRIX</button>
+  </nav>
+
+  <!-- ================= TAB 1: GRID ================= -->
+  <section id="view-grid" role="tabpanel" aria-labelledby="tab-grid">
+    <div class="bezel">
+      <div class="lcd" role="region" aria-label="Wins grid">
+        <div class="readout" id="readout"></div>
+        <div class="gridwrap" id="gridwrap"><div class="grid" id="grid"></div></div>
+        <div class="legend" aria-hidden="true">
+          <span>quiet</span>
+          <span class="cell" data-l="0"></span><span class="cell" data-l="1"></span><span class="cell" data-l="2"></span><span class="cell" data-l="3"></span><span class="cell" data-l="4"></span>
+          <span>lit</span><span class="sep"></span>
+          <span style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap"><span class="cell locked" data-l="3"></span><span id="legendlock">locked in</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2 id="dayhead">Today</h2>
+      <p class="sub" id="daysub"></p>
+      <div class="inputrow">
+        <input class="field" id="wininput" type="text" maxlength="140" placeholder="What did you get done? Anything counts." aria-label="Win description">
+        <button class="gel" id="logbtn">Log win</button>
+      </div>
+      <div class="tags" id="tags" role="group" aria-label="Tag"></div>
+      <div class="newtag" id="newtag">
+        <input class="field" id="newtaginput" type="text" maxlength="20" placeholder="New tag name" aria-label="New tag name">
+        <button class="chip" id="newtagsave">Add tag</button>
+        <button class="chip" id="newtagcancel">Cancel</button>
+      </div>
+      <ul class="wins" id="wins"></ul>
+      <p class="empty" id="empty">Nothing logged for this day yet. A walk, a proper meal, twenty minutes of code: it all counts.</p>
+    </div>
+  </section>
+
+  <!-- ================= TAB 2: MATRIX ================= -->
+  <section id="view-matrix" role="tabpanel" aria-labelledby="tab-matrix" hidden>
+    <div class="weeknav">
+      <div>
+        <h2 id="weekhead">This week</h2>
+        <p class="sub" id="weeksub"></p>
+      </div>
+      <div class="stepbtns">
+        <button class="chip" id="prevweek" aria-label="Previous week">‹</button>
+        <button class="chip" id="nextweek" aria-label="Next week">›</button>
+      </div>
+    </div>
+
+    <div class="bezel">
+      <div class="lcd" role="region" aria-label="Weekly tag balance">
+        <div class="readout" id="eqreadout"></div>
+        <div class="eq" id="eq"></div>
+        <div class="eqnote" id="eqnote"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Weekly targets</h2>
+      <p class="sub">How many wins per tag you're aiming for each week. Set 0 for no target. Weeks reset every Monday.</p>
+      <div class="targets" id="targets"></div>
+    </div>
+
+    <div class="panel">
+      <h2 id="insighthead">This month</h2>
+      <p class="sub">Which parts of life your wins are coming from.</p>
+      <div class="insights">
+        <div class="card"><h3>Most active tag</h3><div id="toptag"></div></div>
+        <div class="card"><h3>Tag breakdown</h3><div id="dist"></div></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ================= SETTINGS ================= -->
+<dialog id="settings" aria-labelledby="settingstitle">
+  <div class="dlg-head">
+    <h2 id="settingstitle">Settings</h2>
+    <button class="iconbtn" id="closesettings" aria-label="Close settings">✕</button>
+  </div>
+  <div class="dlg-body">
+    <div class="dlg-sec">
+      <h3>Theme</h3>
+      <div class="themes" id="themes" role="radiogroup" aria-label="Theme"></div>
+    </div>
+    <div class="dlg-sec">
+      <div class="setrow">
+        <div><p>Locked-in threshold</p><p class="sub">Wins needed in a day for it to count as locked in.</p></div>
+        <div class="stepper">
+          <button class="chip" id="lockdown" aria-label="Lower threshold">−</button>
+          <output id="lockval"></output>
+          <button class="chip" id="lockup" aria-label="Raise threshold">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="dlg-sec">
+      <h3>Your data</h3>
+      <span class="led" id="saveled"><i></i><span id="savetext">Saved on this device</span></span>
+      <div class="btnrow">
+        <button class="chip" id="exportcsv">Export CSV</button>
+        <button class="chip" id="backup">Save backup</button>
+        <button class="chip" id="restore">Restore backup</button>
+        <input type="file" id="restorefile" accept="application/json,.json" hidden>
+      </div>
+      <div class="btnrow"><button class="chip danger" id="erase">Erase all data</button></div>
+    </div>
+    <div class="dlg-sec">
+      <p class="about">On iPhone: open GridLocked in Safari, tap Share, then Add to Home Screen. It then works like an app, offline too.</p>
+      <p class="about" style="margin-top:8px">GridLocked v2. Your wins are stored on this device only, so save a backup now and then. Syncing across devices is coming in a later version.</p>
+    </div>
+  </div>
+</dialog>
+
+<script>
+/* =========================================================
+   STORAGE LAYER — swap for a backend in a later version.
+   ========================================================= */
+const Store = {
+  key: "gridlocked.v1",
+  load() { try { const raw = localStorage.getItem(this.key); return raw ? JSON.parse(raw) : null; } catch (e) { return null; } },
+  save(state) { try { localStorage.setItem(this.key, JSON.stringify(state)); return true; } catch (e) { return false; } }
+};
+
+const DEFAULT_TAGS = [
+  { id: "move",   name: "move",   color: "#ff6b3d", builtin: true },
+  { id: "mind",   name: "mind",   color: "#8b7cff", builtin: true },
+  { id: "make",   name: "make",   color: "#2fb5ff", builtin: true },
+  { id: "social", name: "social", color: "#ffc93c", builtin: true },
+];
+const CUSTOM_COLORS = ["#3ddc97", "#ff5fa2", "#a3e635", "#22d3ee", "#f97316", "#e879f9"];
+const THEMES = [
+  { id: "midnight", name: "Midnight" },
+  { id: "daylight", name: "Daylight" },
+  { id: "brushed",  name: "Brushed" },
+];
+let WEEKS = 26;
+const UNTAGGED = "#7b8494";
+
+function normalise(s) {
+  s = s || {};
+  return {
+    version: 2,
+    tags: Array.isArray(s.tags) && s.tags.length ? s.tags : DEFAULT_TAGS.slice(),
+    wins: Array.isArray(s.wins) ? s.wins : [],
+    targets: s.targets && typeof s.targets === "object" ? s.targets : {},
+    settings: Object.assign({ theme: "midnight", lockAt: 3 }, s.settings || {}),
+  };
+}
+
+let state = normalise(Store.load());
+let view = "grid";
+let selectedDate = dateKey(new Date());
+let selectedTag = null;
+let flashDate = null;
+let weekOffset = 0;
+
+/* ---------- helpers ---------- */
+function dateKey(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+function parseKey(k) { const [y, m, d] = k.split("-").map(Number); return new Date(y, m - 1, d); }
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+function tagById(id) { return state.tags.find(t => t.id === id); }
+function winsOn(k) { return state.wins.filter(w => w.date === k); }
+function lockAt() { return state.settings.lockAt; }
+function level(n) { return n === 0 ? 0 : n === 1 ? 1 : n === 2 ? 2 : n < 5 ? 3 : 4; }
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function mondayOf(d) { const m = new Date(d); m.setHours(0, 0, 0, 0); m.setDate(m.getDate() - ((m.getDay() + 6) % 7)); return m; }
+function isoWeek(d) {
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay() || 7));
+  return Math.ceil(((t - new Date(Date.UTC(t.getUTCFullYear(), 0, 1))) / 864e5 + 1) / 7);
+}
+function fmt(d, opts) { return d.toLocaleDateString("en-GB", opts); }
+
+function persist() {
+  const ok = Store.save(state);
+  document.getElementById("saveled").classList.toggle("off", !ok);
+  document.getElementById("savetext").textContent = ok ? "Saved on this device" : "Not saving: browser storage is blocked";
+}
+
+/* ================= TAB 1: GRID ================= */
+function renderGrid() {
+  const grid = document.getElementById("grid");
+  // fit as many weeks as the screen allows, so cells stay tappable on phones
+  const gwEl = document.getElementById("gridwrap");
+  if (gwEl.clientWidth) WEEKS = Math.max(10, Math.min(26, Math.floor((gwEl.clientWidth - 28) / 22)));
+  grid.style.setProperty("--weeks", WEEKS);
+  grid.innerHTML = "";
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const todayK = dateKey(today);
+  const start = mondayOf(today); start.setDate(start.getDate() - (WEEKS - 1) * 7);
+  const counts = {};
+  state.wins.forEach(w => { counts[w.date] = (counts[w.date] || 0) + 1; });
+
+  ["M", "", "W", "", "F", "", "S"].forEach((l, i) => {
+    const el = document.createElement("span"); el.className = "dlabel"; el.style.gridRow = i + 2; el.textContent = l; grid.appendChild(el);
+  });
+
+  let lastMonth = -1, lastLabelCol = -10;
+  for (let w = 0; w < WEEKS; w++) {
+    for (let d = 0; d < 7; d++) {
+      const day = new Date(start); day.setDate(start.getDate() + w * 7 + d);
+      const k = dateKey(day);
+      if (d === 0 && day.getMonth() !== lastMonth) {
+        lastMonth = day.getMonth();
+        const crowded = w - lastLabelCol < 3 || (w === 0 && day.getDate() > 22);
+        if (!crowded) {
+          lastLabelCol = w;
+          const m = document.createElement("span"); m.className = "mlabel"; m.style.gridColumn = w + 2;
+          m.textContent = day.toLocaleString("en-GB", { month: "short" }); grid.appendChild(m);
+        }
+      }
+      const n = counts[k] || 0;
+      const c = document.createElement("button");
+      c.className = "cell"; c.style.gridColumn = w + 2; c.style.gridRow = d + 2; c.dataset.l = level(n);
+      if (n >= lockAt()) c.classList.add("locked");
+      if (k === todayK) c.classList.add("today");
+      if (k === selectedDate) c.classList.add("selected");
+      if (k === flashDate) c.classList.add("flash");
+      const label = fmt(day, { weekday: "short", day: "numeric", month: "short" });
+      if (day > today) { c.classList.add("future"); c.disabled = true; c.setAttribute("aria-label", label); }
+      else {
+        const wl = n + (n === 1 ? " win" : " wins");
+        c.setAttribute("aria-label", label + ": " + wl); c.title = label + ": " + wl;
+        c.addEventListener("click", () => { selectedDate = k; renderGridTab(); });
+      }
+      grid.appendChild(c);
+    }
+  }
+  flashDate = null;
+  document.getElementById("legendlock").textContent = `locked in (${lockAt()}+ wins)`;
+}
+
+function renderReadout() {
+  const now = new Date();
+  const prefix = dateKey(now).slice(0, 7);
+  const monthWins = state.wins.filter(w => w.date.startsWith(prefix));
+  const perDay = {};
+  monthWins.forEach(w => { perDay[w.date] = (perDay[w.date] || 0) + 1; });
+  const lit = Object.keys(perDay).length;
+  const locked = Object.values(perDay).filter(n => n >= lockAt()).length;
+  document.getElementById("readout").innerHTML =
+    `<span>${now.toLocaleString("en-GB", { month: "short" }).toUpperCase()}</span>` +
+    `<span>DAYS LIT <b>${lit}/${now.getDate()}</b></span>` +
+    `<span>WINS <b>${monthWins.length}</b></span>` +
+    `<span class="lockstat">LOCKED IN <b>${locked}</b></span>`;
+}
+
+function renderTags() {
+  const wrap = document.getElementById("tags");
+  wrap.innerHTML = "";
+  state.tags.forEach(t => {
+    const b = document.createElement("button");
+    b.className = "tag"; b.style.setProperty("--c", t.color);
+    b.setAttribute("aria-pressed", selectedTag === t.id);
+    b.innerHTML = `<span class="dot"></span>${esc(t.name)}` + (t.builtin ? "" : `<span class="x" title="Remove tag" aria-label="Remove tag ${esc(t.name)}">✕</span>`);
+    b.addEventListener("click", e => {
+      if (e.target.classList.contains("x")) { removeTag(t.id); return; }
+      selectedTag = selectedTag === t.id ? null : t.id; renderTags();
+    });
+    wrap.appendChild(b);
+  });
+  const add = document.createElement("button");
+  add.className = "tag add"; add.textContent = "+ new tag";
+  add.addEventListener("click", () => { document.getElementById("newtag").classList.add("open"); document.getElementById("newtaginput").focus(); });
+  wrap.appendChild(add);
+}
+
+function addTag() {
+  const input = document.getElementById("newtaginput");
+  const name = input.value.trim().toLowerCase();
+  if (!name) return;
+  const existing = state.tags.find(t => t.name === name);
+  if (existing) selectedTag = existing.id;
+  else {
+    const n = state.tags.filter(t => !t.builtin).length;
+    const t = { id: uid(), name, color: CUSTOM_COLORS[n % CUSTOM_COLORS.length], builtin: false };
+    state.tags.push(t); selectedTag = t.id; persist();
+  }
+  input.value = ""; document.getElementById("newtag").classList.remove("open");
+  renderTags();
+}
+
+function removeTag(id) {
+  const used = state.wins.filter(w => w.tag === id).length;
+  const t = tagById(id);
+  if (used && !confirm(`Remove "${t.name}"? ${used} logged ${used === 1 ? "win keeps its" : "wins keep their"} text but lose the tag.`)) return;
+  state.wins.forEach(w => { if (w.tag === id) w.tag = null; });
+  state.tags = state.tags.filter(x => x.id !== id);
+  delete state.targets[id];
+  if (selectedTag === id) selectedTag = null;
+  persist(); renderGridTab();
+}
+
+function renderDay() {
+  const todayK = dateKey(new Date());
+  const d = parseKey(selectedDate);
+  const nice = fmt(d, { weekday: "long", day: "numeric", month: "long" });
+  document.getElementById("dayhead").textContent = selectedDate === todayK ? "Today" : nice;
+  const sub = document.getElementById("daysub");
+  if (selectedDate === todayK) sub.textContent = nice;
+  else {
+    sub.innerHTML = `Logging to this day. <button class="linkish" id="backtoday">Back to today</button>`;
+    document.getElementById("backtoday").onclick = () => { selectedDate = todayK; renderGridTab(); };
+  }
+  document.getElementById("logbtn").textContent = selectedDate === todayK ? "Log win" : "Log to " + fmt(d, { day: "numeric", month: "short" });
+
+  const list = document.getElementById("wins");
+  const items = winsOn(selectedDate);
+  list.innerHTML = "";
+  items.forEach(w => {
+    const t = w.tag ? tagById(w.tag) : null;
+    const li = document.createElement("li");
+    li.innerHTML = `<span class="t">${esc(w.text)}</span>` + (t ? `<span class="pill" style="--c:${t.color}">${esc(t.name)}</span>` : "") +
+      `<button class="del" aria-label="Delete win" title="Delete">✕</button>`;
+    li.querySelector(".del").onclick = () => { state.wins = state.wins.filter(x => x.id !== w.id); persist(); renderGridTab(); };
+    list.appendChild(li);
+  });
+  document.getElementById("empty").style.display = items.length ? "none" : "block";
+}
+
+function logWin() {
+  const input = document.getElementById("wininput");
+  const text = input.value.trim();
+  if (!text) { input.focus(); return; }
+  state.wins.push({ id: uid(), date: selectedDate, text, tag: selectedTag, loggedAt: new Date().toISOString() });
+  persist(); input.value = ""; flashDate = selectedDate;
+  renderGridTab(); input.focus();
+}
+
+function renderGridTab() { renderReadout(); renderGrid(); renderTags(); renderDay(); }
+
+/* ================= TAB 2: MATRIX ================= */
+function weekRange() {
+  const start = mondayOf(new Date()); start.setDate(start.getDate() + weekOffset * 7);
+  const end = new Date(start); end.setDate(start.getDate() + 6);
+  return { start, end, sk: dateKey(start), ek: dateKey(end) };
+}
+
+function renderMatrix(animate) {
+  const { start, end, sk, ek } = weekRange();
+  const weekWins = state.wins.filter(w => w.date >= sk && w.date <= ek);
+  const counts = {}; let untagged = 0;
+  weekWins.forEach(w => { if (w.tag && tagById(w.tag)) counts[w.tag] = (counts[w.tag] || 0) + 1; else untagged++; });
+
+  document.getElementById("weekhead").textContent = weekOffset === 0 ? "This week" : weekOffset === -1 ? "Last week" : "Week of " + fmt(start, { day: "numeric", month: "short" });
+  document.getElementById("weeksub").textContent = fmt(start, { day: "numeric", month: "short" }) + " to " + fmt(end, { day: "numeric", month: "short" });
+  document.getElementById("nextweek").disabled = weekOffset >= 0;
+
+  const tags = state.tags;
+  const withTarget = tags.filter(t => (state.targets[t.id] || 0) > 0);
+  const hits = withTarget.filter(t => (counts[t.id] || 0) >= state.targets[t.id]).length;
+  document.getElementById("eqreadout").innerHTML =
+    `<span>WK ${isoWeek(start)}</span><span>WINS <b>${weekWins.length}</b></span>` +
+    `<span class="lockstat">TARGETS HIT <b>${hits}/${withTarget.length}</b></span>`;
+
+  const CAP = 12;
+  const rows = Math.min(CAP, Math.max(8, ...tags.map(t => Math.max(state.targets[t.id] || 0, counts[t.id] || 0))));
+  const eq = document.getElementById("eq");
+  eq.innerHTML = "";
+  tags.forEach(t => {
+    const n = counts[t.id] || 0, target = state.targets[t.id] || 0;
+    const hit = target > 0 && n >= target;
+    const bar = document.createElement("div");
+    bar.className = "bar" + (hit ? " hit" : "");
+    bar.setAttribute("aria-label", `${t.name}: ${n} ${n === 1 ? "win" : "wins"}${target ? ` of ${target} target` : ""}`);
+    const stack = document.createElement("div"); stack.className = "stack";
+    for (let i = 0; i < rows; i++) {
+      const s = document.createElement("span"); s.className = "seg";
+      s.style.setProperty("--d", (animate ? i * 45 : 0) + "ms");
+      s.dataset.on = i < n ? "1" : "";
+      if (i >= n && i < target) s.classList.add("slot");
+      if (target && i === target - 1) s.classList.add("target");
+      stack.appendChild(s);
+    }
+    const lab = document.createElement("div"); lab.className = "barlabel";
+    lab.innerHTML = `<div class="n">${n > rows ? rows + "+" : n}${target ? `<span style="font-size:16px;color:var(--lcd-dim)">/${target}</span>` : ""}</div>` +
+      `<div class="nm"><span class="dot" style="--c:${t.color}"></span>${esc(t.name)}</div>`;
+    bar.append(stack, lab);
+    eq.appendChild(bar);
+  });
+  // light the segments (after a frame so the transition plays when animating)
+  const light = () => eq.querySelectorAll(".seg").forEach(s => { if (s.dataset.on) s.classList.add("on"); });
+  if (animate) requestAnimationFrame(() => requestAnimationFrame(light)); else light();
+
+  let note = untagged ? `+${untagged} untagged ${untagged === 1 ? "win" : "wins"} this week` : "";
+  if (!withTarget.length) note = (note ? note + ". " : "") + "Set targets below to add markers to the bars.";
+  document.getElementById("eqnote").textContent = note;
+
+  renderTargets();
+  renderInsights();
+}
+
+function renderTargets() {
+  const wrap = document.getElementById("targets");
+  wrap.innerHTML = "";
+  state.tags.forEach(t => {
+    const v = state.targets[t.id] || 0;
+    const row = document.createElement("div"); row.className = "trow";
+    row.innerHTML = `<span class="nm"><span class="dot" style="--c:${t.color}"></span>${esc(t.name)}</span>
+      <span class="stepper"><button class="chip" data-d="-1" aria-label="Lower ${esc(t.name)} target">−</button>
+      <output aria-live="polite">${v}</output>
+      <button class="chip" data-d="1" aria-label="Raise ${esc(t.name)} target">+</button></span>`;
+    row.querySelectorAll("button").forEach(b => b.onclick = () => {
+      const nv = Math.max(0, Math.min(14, (state.targets[t.id] || 0) + Number(b.dataset.d)));
+      if (nv === 0) delete state.targets[t.id]; else state.targets[t.id] = nv;
+      persist(); renderMatrix(false);
+    });
+    wrap.appendChild(row);
+  });
+}
+
+function renderInsights() {
+  const now = new Date();
+  const prefix = dateKey(now).slice(0, 7);
+  document.getElementById("insighthead").textContent = now.toLocaleString("en-GB", { month: "long" });
+  const monthWins = state.wins.filter(w => w.date.startsWith(prefix));
+  const counts = {}; let untagged = 0;
+  monthWins.forEach(w => { if (w.tag && tagById(w.tag)) counts[w.tag] = (counts[w.tag] || 0) + 1; else untagged++; });
+  const total = monthWins.length;
+  const ranked = state.tags.map(t => ({ t, n: counts[t.id] || 0 })).filter(x => x.n > 0).sort((a, b) => b.n - a.n);
+
+  const top = document.getElementById("toptag");
+  if (!ranked.length) top.innerHTML = `<p class="top-sub" style="margin:0">Log a few tagged wins this month and your top tag shows up here.</p>`;
+  else {
+    const { t, n } = ranked[0];
+    const tie = ranked.length > 1 && ranked[1].n === n;
+    top.innerHTML = `<div class="top-tag"><span class="dot" style="--c:${t.color}"></span>${esc(t.name)}</div>
+      <p class="top-sub">${n} ${n === 1 ? "win" : "wins"}, ${Math.round(n / total * 100)}% of everything you logged this month${tie ? ` (tied with ${esc(ranked[1].t.name)})` : ""}.</p>`;
+  }
+
+  const dist = document.getElementById("dist");
+  if (!total) { dist.innerHTML = `<p class="top-sub" style="margin:0">Nothing logged this month yet.</p>`; return; }
+  const parts = ranked.map(x => ({ name: x.t.name, color: x.t.color, n: x.n }));
+  if (untagged) parts.push({ name: "untagged", color: UNTAGGED, n: untagged });
+  // 24-segment LED strip, largest-remainder rounding
+  const SEGS = 24;
+  const raw = parts.map(p => p.n / total * SEGS);
+  const segs = raw.map(Math.floor);
+  let left = SEGS - segs.reduce((a, b) => a + b, 0);
+  raw.map((r, i) => [r - Math.floor(r), i]).sort((a, b) => b[0] - a[0]).slice(0, left).forEach(([, i]) => segs[i]++);
+  let strip = "";
+  parts.forEach((p, i) => { for (let k = 0; k < segs[i]; k++) strip += `<span style="--c:${p.color}"></span>`; });
+  dist.innerHTML = `<div class="ledstrip" aria-hidden="true">${strip}</div><ul class="dist">` +
+    parts.map(p => `<li><span class="dot" style="--c:${p.color}"></span><span class="nm">${esc(p.name)}</span><span class="pct">${p.n} · ${Math.round(p.n / total * 100)}%</span></li>`).join("") + `</ul>`;
+}
+
+/* ================= VIEW SWITCH ================= */
+function setView(v) {
+  view = v;
+  document.getElementById("tab-grid").setAttribute("aria-selected", v === "grid");
+  document.getElementById("tab-matrix").setAttribute("aria-selected", v === "matrix");
+  document.getElementById("view-grid").hidden = v !== "grid";
+  document.getElementById("view-matrix").hidden = v !== "matrix";
+  if (v === "matrix") renderMatrix(true); else renderGridTab();
+}
+
+/* ================= SETTINGS ================= */
+const THEME_COLORS = { midnight: "#121929", daylight: "#eef1f6", brushed: "#18233a" };
+function applyTheme() {
+  document.documentElement.dataset.theme = state.settings.theme;
+  document.querySelector('meta[name="theme-color"]').content = THEME_COLORS[state.settings.theme] || "#121929";
+}
+function renderSettings() {
+  const wrap = document.getElementById("themes");
+  wrap.innerHTML = "";
+  THEMES.forEach(th => {
+    const b = document.createElement("button");
+    b.className = "theme-opt"; b.setAttribute("role", "radio"); b.setAttribute("aria-checked", state.settings.theme === th.id);
+    b.innerHTML = `<div class="swatch sw-${th.id}"></div>${th.name}${th.id === "midnight" ? " (default)" : ""}`;
+    b.onclick = () => { state.settings.theme = th.id; persist(); applyTheme(); renderSettings(); };
+    wrap.appendChild(b);
+  });
+  document.getElementById("lockval").textContent = lockAt();
+}
+function changeLock(d) {
+  state.settings.lockAt = Math.max(2, Math.min(6, lockAt() + d));
+  persist(); renderSettings(); if (view === "grid") renderGridTab();
+}
+
+/* ---------- export / backup ---------- */
+function download(name, content, type) {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([content], { type })); a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+function exportCSV() {
+  const q = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
+  const rows = [["date", "tag", "win", "logged_at"].join(",")];
+  state.wins.slice().sort((a, b) => a.date.localeCompare(b.date))
+    .forEach(w => rows.push([w.date, w.tag ? tagById(w.tag)?.name : "", w.text, w.loggedAt].map(q).join(",")));
+  download(`gridlocked-${dateKey(new Date())}.csv`, rows.join("\n"), "text/csv");
+}
+function backup() { download(`gridlocked-backup-${dateKey(new Date())}.json`, JSON.stringify(state, null, 2), "application/json"); }
+function restore(file) {
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const data = JSON.parse(r.result);
+      if (!Array.isArray(data.wins) || !Array.isArray(data.tags)) throw new Error("bad");
+      if (!confirm(`Replace current data with this backup (${data.wins.length} wins)?`)) return;
+      state = normalise(data); persist(); applyTheme(); renderSettings(); setView(view);
+    } catch (e) { alert("That file isn't a GridLocked backup. Choose a .json file made with Save backup."); }
+  };
+  r.readAsText(file);
+}
+function eraseAll() {
+  if (!confirm("Erase every win, tag and target on this device? Save a backup first if you might want them back.")) return;
+  const theme = state.settings.theme;
+  state = normalise(null); state.settings.theme = theme;
+  persist(); renderSettings(); setView(view);
+}
+
+/* ================= WIRE UP ================= */
+const $ = id => document.getElementById(id);
+$("tab-grid").onclick = () => setView("grid");
+$("tab-matrix").onclick = () => setView("matrix");
+document.querySelector(".modes").addEventListener("keydown", e => {
+  if (e.key === "ArrowRight" || e.key === "ArrowLeft") { const v = view === "grid" ? "matrix" : "grid"; setView(v); $("tab-" + v).focus(); }
+});
+$("logbtn").onclick = logWin;
+$("wininput").addEventListener("keydown", e => { if (e.key === "Enter") logWin(); });
+$("newtagsave").onclick = addTag;
+$("newtaginput").addEventListener("keydown", e => { if (e.key === "Enter") addTag(); if (e.key === "Escape") $("newtagcancel").click(); });
+$("newtagcancel").onclick = () => { $("newtag").classList.remove("open"); $("newtaginput").value = ""; };
+$("prevweek").onclick = () => { weekOffset--; renderMatrix(true); };
+$("nextweek").onclick = () => { if (weekOffset < 0) { weekOffset++; renderMatrix(true); } };
+$("opensettings").onclick = () => { renderSettings(); $("settings").showModal(); };
+$("closesettings").onclick = () => $("settings").close();
+$("settings").addEventListener("click", e => { if (e.target === $("settings")) $("settings").close(); });
+$("lockdown").onclick = () => changeLock(-1);
+$("lockup").onclick = () => changeLock(1);
+$("exportcsv").onclick = exportCSV;
+$("backup").onclick = backup;
+$("restore").onclick = () => $("restorefile").click();
+$("restorefile").onchange = e => { if (e.target.files[0]) restore(e.target.files[0]); e.target.value = ""; };
+$("erase").onclick = eraseAll;
+
+applyTheme();
+renderSettings();
+setView("grid");
+persist();
+let resizeT;
+window.addEventListener("resize", () => { clearTimeout(resizeT); resizeT = setTimeout(() => { if (view === "grid") { renderGrid(); const g = $("gridwrap"); g.scrollLeft = g.scrollWidth; } }, 150); });
+if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
+const gw = $("gridwrap"); gw.scrollLeft = gw.scrollWidth;
+</script>
+</body>
+</html>
